@@ -14,11 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='review',
             name='token',
-            field=models.UUIDField(default=uuid.uuid4, editable=False, verbose_name='Token'),
+            field=models.UUIDField(
+                default=uuid.uuid4, editable=False, verbose_name='Token'),
         ),
         migrations.AlterField(
             model_name='review',
             name='goal',
-            field=models.CharField(max_length=256, null=True, verbose_name='Observações'),
+            field=models.CharField(
+                max_length=256, null=True, verbose_name='Observações'),
         ),
     ]

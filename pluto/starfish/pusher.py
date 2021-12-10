@@ -9,6 +9,7 @@ class PusherChannel():
     def __str__(self):
         return self.name
 
+
 class PusherEvent():
     def __init__(self, name):
         self.name = name
@@ -16,8 +17,10 @@ class PusherEvent():
     def __str__(self):
         return self.name
 
+
 class Channels():
     STARFISH = PusherChannel('starfish')
+
 
 class Events():
     START = PusherEvent('start')
@@ -26,6 +29,7 @@ class Events():
     COUNTING = PusherEvent('counting')
     JOIN = PusherEvent('join')
     CREATE = PusherEvent('create')
+
 
 class Pusher():
     def __init__(self, channel: PusherChannel, event: PusherEvent) -> None:

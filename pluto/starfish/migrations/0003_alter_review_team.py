@@ -14,6 +14,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='review',
             name='team',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='starfish.team', verbose_name='Time'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='starfish.team',
+                verbose_name='Time'),
         ),
     ]

@@ -17,8 +17,12 @@ class Team(models.Model):
 
 
 class Member(models.Model):
-    username = models.CharField(verbose_name='Nome de usuário', max_length=64, null=False)
-    team = models.ForeignKey(Team,  verbose_name='Time', on_delete=models.CASCADE, null=False)
+    username = models.CharField(
+        verbose_name='Nome de usuário', max_length=64, null=False
+    )
+    team = models.ForeignKey(
+        Team, verbose_name='Time', on_delete=models.CASCADE, null=False
+    )
 
     class Meta:
         verbose_name = 'Membro'
@@ -29,11 +33,27 @@ class Member(models.Model):
 
 
 class Suggestion(models.Model):
-    text = models.CharField(verbose_name='Sugestão', max_length=256, null=False)
-    observations = models.CharField(verbose_name='Observações', max_length=512, null=True)
-    owner = models.ForeignKey(Member, verbose_name='Nome de usuário', on_delete=models.CASCADE, null=False)
-    category = models.CharField(verbose_name='Categoria', choices=choices.CATEGORIES, max_length=64, null=False)
-    votes = models.ManyToManyField(Member, related_name='member_votes', verbose_name='Votos')
+    text = models.CharField(
+        verbose_name='Sugestão', max_length=256, null=False
+    )
+    observations = models.CharField(
+        verbose_name='Observações', max_length=512, null=True
+    )
+    owner = models.ForeignKey(
+        Member,
+        verbose_name='Nome de usuário',
+        on_delete=models.CASCADE,
+        null=False,
+    )
+    category = models.CharField(
+        verbose_name='Categoria',
+        choices=choices.CATEGORIES,
+        max_length=64,
+        null=False,
+    )
+    votes = models.ManyToManyField(
+        Member, related_name='member_votes', verbose_name='Votos'
+    )
 
     class Meta:
         verbose_name = 'Sugestão'
@@ -47,12 +67,24 @@ class Suggestion(models.Model):
 
 
 class Review(models.Model):
-    goal = models.CharField(verbose_name='Observações', max_length=256, null=True)
-    token = models.UUIDField(verbose_name='Token', default=uuid.uuid4, editable=False)
-    members = models.ManyToManyField(Member, related_name='participating', verbose_name='Votos')
-    suggestions = models.ManyToManyField(Suggestion, related_name='reviews', verbose_name='Votos')
-    team = models.ForeignKey(Team, verbose_name='Time', on_delete=models.CASCADE, null=True)
-    created_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
+    goal = models.CharField(
+        verbose_name='Observações', max_length=256, null=True
+    )
+    token = models.UUIDField(
+        verbose_name='Token', default=uuid.uuid4, editable=False
+    )
+    members = models.ManyToManyField(
+        Member, related_name='participating', verbose_name='Votos'
+    )
+    suggestions = models.ManyToManyField(
+        Suggestion, related_name='reviews', verbose_name='Votos'
+    )
+    team = models.ForeignKey(
+        Team, verbose_name='Time', on_delete=models.CASCADE, null=True
+    )
+    created_at = models.DateTimeField(
+        verbose_name='Criado em', auto_now_add=True
+    )
 
     class Meta:
         verbose_name = 'Sugestão'
@@ -60,7 +92,6 @@ class Review(models.Model):
 
     def __str__(self):
         return self.goal
-
 
     def export(self):
         pass
