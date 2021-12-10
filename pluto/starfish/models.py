@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from starfish import choices
@@ -66,7 +68,10 @@ class Suggestion(models.Model):
 
 class Review(models.Model):
     goal = models.CharField(
-        verbose_name='Observações', max_length=256, null=False
+        verbose_name='Observações', max_length=256, null=True
+    )
+    token = models.UUIDField(
+        verbose_name='Token', default=uuid.uuid4, editable=False
     )
     members = models.ManyToManyField(
         Member, related_name='participating', verbose_name='Votos'
@@ -75,7 +80,7 @@ class Review(models.Model):
         Suggestion, related_name='reviews', verbose_name='Votos'
     )
     team = models.ForeignKey(
-        Team, verbose_name='Time', on_delete=models.CASCADE, null=False
+        Team, verbose_name='Time', on_delete=models.CASCADE, null=True
     )
     created_at = models.DateTimeField(
         verbose_name='Criado em', auto_now_add=True
