@@ -27,10 +27,13 @@ class MemberSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     goal = serializers.CharField(required=True, allow_null=False)
     members = serializers.PrimaryKeyRelatedField(
-        queryset=models.Member.objects.all(), required=True, allow_null=False
+        queryset=models.Member.objects.all(), many=True, required=True, allow_null=False
     )
     suggestions = serializers.PrimaryKeyRelatedField(
-        queryset=models.Suggestion.objects.all(), required=True, allow_null=False
+        queryset=models.Suggestion.objects.all(),
+        many=True,
+        required=True,
+        allow_null=False,
     )
     team = serializers.PrimaryKeyRelatedField(
         queryset=models.Team.objects.all(), required=True, allow_null=False
@@ -51,7 +54,7 @@ class SuggestionSerializer(serializers.ModelSerializer):
     )
     category = serializers.CharField()
     votes = serializers.PrimaryKeyRelatedField(
-        queryset=models.Member.objects.all(), required=True, allow_null=False
+        queryset=models.Member.objects.all(), required=True, allow_null=False, many=True
     )
 
     class Meta:

@@ -1,4 +1,4 @@
-from rest_framework import filters, permissions, viewsets, decorators
+from rest_framework import filters, permissions, viewsets, decorators, response, status
 from starfish import models
 from starfish import serializers
 
@@ -48,7 +48,12 @@ class SuggestionViewSet(viewsets.ModelViewSet):
         methods=["post"],
         url_path="vote",
         url_name="vote",
-        detail=False,
+        detail=True,
     )
-    def vote(self, reqeust):
-        pass
+    def vote(self, request, pk):
+        suggestion = models.Suggestion.objects.get(id=pk)
+        member = models.Member.objects.get(id=request.data["id_member"])
+
+        suggestion.vote(member=member)
+
+        return response.Response(status=status.HTTP_200_OK)
