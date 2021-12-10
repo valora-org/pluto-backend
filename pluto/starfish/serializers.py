@@ -8,8 +8,8 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Team
-        read_only_fields = ["id"]
-        fields = ["id", "name"]
+        read_only_fields = ['id']
+        fields = ['id', 'name']
 
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -20,14 +20,17 @@ class MemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Member
-        read_only_fields = ["id"]
-        fields = ["id", "username", "team"]
+        read_only_fields = ['id']
+        fields = ['id', 'username', 'team']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     goal = serializers.CharField(required=True, allow_null=False)
     members = serializers.PrimaryKeyRelatedField(
-        queryset=models.Member.objects.all(), many=True, required=True, allow_null=False
+        queryset=models.Member.objects.all(),
+        many=True,
+        required=True,
+        allow_null=False,
     )
     suggestions = serializers.PrimaryKeyRelatedField(
         queryset=models.Suggestion.objects.all(),
@@ -38,12 +41,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     team = serializers.PrimaryKeyRelatedField(
         queryset=models.Team.objects.all(), required=True, allow_null=False
     )
-    created_at = serializers.DateTimeField(format=settings.DEFAULT_DATETIME_FORMAT)
+    created_at = serializers.DateTimeField(
+        format=settings.DEFAULT_DATETIME_FORMAT
+    )
 
     class Meta:
         model = models.Review
-        read_only_fields = ["id", "created_at"]
-        fields = ["id", "goal", "members", "suggestions", "team", "created_at"]
+        read_only_fields = ['id', 'created_at']
+        fields = ['id', 'goal', 'members', 'suggestions', 'team', 'created_at']
 
 
 class SuggestionSerializer(serializers.ModelSerializer):
@@ -54,10 +59,13 @@ class SuggestionSerializer(serializers.ModelSerializer):
     )
     category = serializers.CharField()
     votes = serializers.PrimaryKeyRelatedField(
-        queryset=models.Member.objects.all(), required=True, allow_null=False, many=True
+        queryset=models.Member.objects.all(),
+        required=True,
+        allow_null=False,
+        many=True,
     )
 
     class Meta:
         model = models.Suggestion
-        read_only_fields = ["id"]
-        fields = ["id", "text", "observations", "owner", "category", "votes"]
+        read_only_fields = ['id']
+        fields = ['id', 'text', 'observations', 'owner', 'category', 'votes']

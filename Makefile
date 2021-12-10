@@ -37,11 +37,10 @@ up: start ## Start django dev server
 start:
 	@docker-compose start
 
-
 stop: ## Stop container
 	@docker-compose stop || true
 
-delete-container: 
+delete-container:
 	@docker-compose down || true
 
 remove: delete-container ## Delete containers and images
