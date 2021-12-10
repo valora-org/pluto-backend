@@ -92,4 +92,13 @@ REST_FRAMEWORK = {
     ],
 }
 
+PUSHER = dict(
+    app_id='1315245',
+    key='df1a109fb21f5f27077d',
+    secret='2badb66608a13bf06817',
+    cluster='mt1',
+    ssl=True
+)
+
+
 DEFAULT_DATETIME_FORMAT='%d/%m/%Y %H:%M:%S'

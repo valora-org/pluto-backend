@@ -24,32 +24,35 @@ class MemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Member
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'team']
         fields = ['id', 'username', 'team']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     goal = serializers.CharField(
-        required=True, allow_null=False
+        required=False, allow_null=True
+    )
+    token = serializers.UUIDField(
+        read_only=True
     )
     members = serializers.PrimaryKeyRelatedField(
         queryset=models.Member.objects.all(),
         many=True,
-        required=True,
-        allow_null=False
+        required=False,
+        allow_null=True
     )
     suggestions = serializers.PrimaryKeyRelatedField(
         queryset=models.Suggestion.objects.all(),
         many=True,
-        required=True,
-        allow_null=False
+        required=False,
+        allow_null=True
     )
     team = serializers.PrimaryKeyRelatedField(
-        queryset=models.Team.objects.all(), required=True, allow_null=False
+        queryset=models.Team.objects.all(), required=False, allow_null=True
     )
-    created_at = serializers.DateTimeField(format=settings.DEFAULT_DATETIME_FORMAT)
+    created_at = serializers.DateTimeField(format=settings.DEFAULT_DATETIME_FORMAT, read_only=True)
 
     class Meta:
         model = models.Review
         read_only_fields = ['id', 'created_at']
-        fields = ['id', 'goal', 'members', 'suggestions', 'team', 'created_at']
+        fields = ['id', 'goal', 'token', 'members', 'suggestions', 'team', 'created_at']

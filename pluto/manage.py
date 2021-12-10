@@ -6,6 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    if os.environ.get('RUN_MAIN') == 'true':
+        import ptvsd
+        ptvsd.enable_attach(address = ('0.0.0.0', 3005))
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pluto.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -16,7 +20,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == '__main__':
     main()
