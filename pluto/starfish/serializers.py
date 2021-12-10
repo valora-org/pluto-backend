@@ -34,11 +34,13 @@ class ReviewSerializer(serializers.ModelSerializer):
     )
     members = serializers.PrimaryKeyRelatedField(
         queryset=models.Member.objects.all(),
+        many=True,
         required=True,
         allow_null=False
     )
     suggestions = serializers.PrimaryKeyRelatedField(
         queryset=models.Suggestion.objects.all(),
+        many=True,
         required=True,
         allow_null=False
     )
