@@ -1,6 +1,7 @@
-from rest_framework import (filters, permissions, viewsets)
+from rest_framework import filters, permissions, viewsets, decorators, response, status
 from starfish import models
 from starfish import serializers
+
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = models.Team.objects.all()
@@ -10,8 +11,8 @@ class TeamViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     )
-    search_fields = ['name']
-    ordering_fields = ['-id', 'name']
+    search_fields = ["name"]
+    ordering_fields = ["-id", "name"]
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -22,8 +23,8 @@ class MemberViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     )
-    search_fields = ['username', 'team__name']
-    ordering_fields = ['-id', 'username']
+    search_fields = ["username", "team__name"]
+    ordering_fields = ["-id", "username"]
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -34,5 +35,25 @@ class ReviewViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     )
-    search_fields = ['goal', 'suggestions__text']
-    ordering_fields = ['-id']
+    search_fields = ["goal", "suggestions__text"]
+    ordering_fields = ["-id"]
+
+
+class SuggestionViewSet(viewsets.ModelViewSet):
+    queryset = models.Suggestion.objects.all()
+    serializer_class = serializers.SuggestionSerializer
+    permission_classes = (permissions.AllowAny,)
+
+    @decorators.action(
+        methods=["post"],
+        url_path="vote",
+        url_name="vote",
+        detail=True,
+    )
+    def vote(self, request, pk):
+        suggestion = models.Suggestion.objects.get(id=pk)
+        member = models.Member.objects.get(id=request.data["id_member"])
+
+        suggestion.vote(member=member)
+
+        return response.Response(status=status.HTTP_200_OK)
