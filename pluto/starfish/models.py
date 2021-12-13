@@ -1,7 +1,8 @@
 from django.db import models
-
 from starfish import choices
-
+import pandas as pd
+import pendulum 
+import os
 
 class Team(models.Model):
     name = models.CharField(verbose_name="Nome", max_length=64, null=False)
@@ -76,5 +77,16 @@ class Review(models.Model):
     def __str__(self):
         return self.goal
 
-    def export(self):
-        pass
+    def export(self, data):
+        now = pendulum.now().strftime("%Y-%m-%dT%H:%M:%S")
+        filename = f"review-{now}.csv"
+        filepath = 'csv_review'
+        
+        if not os.path.exists(filepath):
+            os.mkdir(filepath)
+        
+        dir = os.path.join(filepath, filename) 
+        df = pd.DataFrame.from_dict(data, orient= 'index')
+        df.to_csv(dir)
+
+        return filename
