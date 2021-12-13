@@ -144,6 +144,21 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         return response.Response(data=message, status=status.HTTP_200_OK)
 
+    @decorators.action(
+        methods=["post"],
+        url_path="export",
+        url_name="export",
+        detail=True,
+    )
+    def export_csv(self, request, pk):
+        review = models.Review.objects.get(id=pk)
+        serializer = serializers.ReviewSerializer(review)
+        
+        review.export(data=serializer.data)
+
+        return response.Response(status=status.HTTP_200_OK)
+
+
 
 class SuggestionViewSet(viewsets.ModelViewSet):
     queryset = models.Suggestion.objects.all()
@@ -158,5 +173,4 @@ class SuggestionViewSet(viewsets.ModelViewSet):
         member = models.Member.objects.get(id=request.data['id_member'])
 
         suggestion.vote(member=member)
-
         return response.Response(status=status.HTTP_200_OK)
